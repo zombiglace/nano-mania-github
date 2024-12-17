@@ -1,0 +1,44 @@
+body {
+  margin: 0;
+  overflow: hidden; /* Empêche le défilement de la page */
+}
+canvas {
+  display: block;
+}
+
+#interaction-text {
+  position: absolute; /* Positionner de manière absolue */
+  top: 10px; /* Distance du haut */
+  left: 10px; /* Distance de la gauche */
+  color: white; /* Couleur du texte */
+  font-size: 20px; /* Taille de la police */
+  display: none; /* Masquer par défaut */
+}
+#box-text {
+  position: absolute; /* Positionner de manière absolue */
+  top: 50px; /* Distance du haut */
+  left: 10px; /* Distance de la gauche */
+  color: white; /* Couleur du texte */
+  font-size: 20px; /* Taille de la police */
+  display: none; /* Masquer par défaut */
+  text-align: center;
+  align-items: center;
+}
+
+#shelf-interaction {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+  font-size: 20px;
+  display: flex; /* Utiliser flex pour centrer le contenu */
+  justify-content: center;
+  align-items: center;
+  display: none; /* Masquer par défaut */
+  transition: opacity 0.3s ease; /* Ajouter une transition pour l'opacité */
+}
+
+#shelf-interaction.visible {
+  display: flex; /* Afficher l'élément quand il a la classe 'visible' */
+  opacity: 1; /* Assurez-vous que l'élément est visible */
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            background: #f4f4f4;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+        li:hover {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ma Todo List</h1>
+    <input type="text" id="itemInput" placeholder="Ajouter un nouvel élément">
+    <button id="addButton">Ajouter</button>
+    <ul id="todoList"></ul>
+
+    <script>
+        const todoList = document.getElementById('todoList');
+        const itemInput = document.getElementById('itemInput');
+        const addButton = document.getElementById('addButton');
+
+        // Charger les éléments sauvegardés
+        const savedItems = JSON.parse(localStorage.getItem('todoItems')) || [];
+        savedItems.forEach(item => addItemToList(item));
+
+        // Ajouter un nouvel élément
+        addButton.addEventListener('click', () => {
+            const itemText = itemInput.value.trim();
+            if (itemText) {
+                addItemToList(itemText);
+                itemInput.value = '';
+                saveItems();
+            }
+        });
+
+        // Fonction pour ajouter un élément à la liste
+        function addItemToList(text) {
+            const li = document.createElement('li');
+            li.textContent = text;
+            li.addEventListener('click', () => {
+                todoList.removeChild(li);
+                saveItems();
+            });
+            todoList.appendChild(li);
+        }
+
+        // Sauvegarder les éléments dans le localStorage
+        function saveItems() {
+            const items = Array.from(todoList.children).map(li => li.textContent);
+            localStorage.setItem('todoItems', JSON.stringify(items));
+        }
+    </script>
+
+</body>
+</html>
