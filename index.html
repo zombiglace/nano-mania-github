@@ -80,14 +80,6 @@
         transform: translateY(-50%);
         display: none; /* Masqué par défaut */
       }
-
-      #joystick {
-    touch-action: none; /* Empêche le défilement de la page lors de l'utilisation du joystick */
-}
-
-#joystick-inner {
-    transition: transform 0.1s;
-}
     </style>
     <div
       id="money"
@@ -173,11 +165,6 @@
         </li>
       </ul>
     </div>
-<div id="joystick" style="position: fixed; bottom: 20px; left: 20px; width: 100px; height: 100px; background: rgba(0, 0, 0, 0.5); border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-    <div id="joystick-inner" style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.7); border-radius: 50%;"></div>
-</div>
-
-<button id="interact" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background: #007BFF; color: white; border: none; border-radius: 5px;">Interagir</button>
 
     <!-- - -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -727,77 +714,6 @@
         document.getElementById("money").textContent = money + "$"; // Met à jour le texte de la div
       }
 
-      //teste mobile
-const joystick = document.getElementById("joystick");
-const joystickInner = document.getElementById("joystick-inner");
-const interactButton = document.getElementById("interact");
-
-let isMoving = false;
-let moveDirection = { x: 0, y: 0 };
-
-// Écoute des événements tactiles pour le joystick
-joystick.addEventListener("touchstart", (event) => {
-    isMoving = true;
-    updateJoystick(event);
-});
-
-joystick.addEventListener("touchmove", (event) => {
-    updateJoystick(event);
-});
-
-joystick.addEventListener("touchend", () => {
-    isMoving = false;
-    moveDirection = { x: 0, y: 0 };
-    joystickInner.style.transform = "translate(0, 0)";
-});
-
-// Met à jour la position du joystick
-function updateJoystick(event) {
-    const rect = joystick.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    const touchX = event.touches[0].clientX;
-    const touchY = event.touches[0].clientY;
-
-    const deltaX = touchX - centerX;
-    const deltaY = touchY - centerY;
-
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    const maxDistance = rect.width / 2;
-
-    if (distance > maxDistance) {
-        const angle = Math.atan2(deltaY, deltaX);
-        moveDirection.x = Math.cos(angle);
-        moveDirection.y = Math.sin(angle);
-        joystickInner.style.transform = `translate(${moveDirection.x * maxDistance}px, ${moveDirection.y * maxDistance}px)`;
-    } else {
-        moveDirection.x = deltaX / maxDistance;
-        moveDirection.y = deltaY / maxDistance;
-        joystickInner.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-    }
-}
-
-// Boucle de mise à jour du mouvement du joueur
-function gameLoop() {
-    if (isMoving) {
-        // Déplacez le joueur en fonction de moveDirection
-        player.x += moveDirection.x * playerSpeed; // playerSpeed est la vitesse de déplacement
-        player.y += moveDirection.y * playerSpeed;
-    }
-    requestAnimationFrame(gameLoop);
-}
-
-// Écoute de l'événement de clic sur le bouton d'interaction
-interactButton.addEventListener("click", () => {
-    const distanceToShelf = calculateDistance(player, shelf);
-    if (distanceToShelf <= interactionDistance) {
-        showInventory(); // Affiche l'inventaire
-    }
-});
-
-// Démarrer la boucle de jeu
-gameLoop();
       animate();
     </script>
   </body>
