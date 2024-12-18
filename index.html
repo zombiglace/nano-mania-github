@@ -165,6 +165,23 @@
         </li>
       </ul>
     </div>
+    <div
+      id="controls"
+      style="
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+      "
+    >
+      <button id="moveUp">↑</button>
+      <button id="moveDown">↓</button>
+      <button id="moveLeft">←</button>
+      <button id="moveRight">→</button>
+      <button id="interact">E</button>
+    </div>
 
     <!-- - -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -713,6 +730,69 @@
       function updateMoneyDisplay() {
         document.getElementById("money").textContent = money + "$"; // Met à jour le texte de la div
       }
+
+      //teste mobile
+      // Écoute des événements tactiles pour le mouvement
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      window.addEventListener("touchstart", (event) => {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+      });
+
+      window.addEventListener("touchmove", (event) => {
+        const touchEndX = event.touches[0].clientX;
+        const touchEndY = event.touches[0].clientY;
+
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        // Déplacer le joueur en fonction du mouvement tactile
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (deltaX > 0) {
+            keys["d"] = true; // Tourner à droite
+          } else {
+            keys["q"] = true; // Tourner à gauche
+          }
+        } else {
+          if (deltaY > 0) {
+            keys["s"] = true; // Reculer
+          } else {
+            keys["z"] = true; // Avancer
+          }
+        }
+      });
+
+      // Réinitialiser les touches lorsque le doigt est levé
+      window.addEventListener("touchend", () => {
+        keys["z"] = false;
+        keys["s"] = false;
+        keys["q"] = false;
+        keys["d"] = false;
+      });
+      document.getElementById("moveUp").addEventListener("click", () => {
+        keys["z"] = true; // Avancer
+      });
+
+      document.getElementById("moveDown").addEventListener("click", () => {
+        keys["s"] = true; // Reculer
+      });
+
+      document.getElementById("moveLeft").addEventListener("click", () => {
+        keys["q"] = true; // Tourner à gauche
+      });
+
+      document.getElementById("moveRight").addEventListener("click", () => {
+        keys["d"] = true; // Tourner à droite
+      });
+
+      document.getElementById("interact").addEventListener("click", () => {
+        const distanceToShelf = calculateDistance(player, shelf);
+        if (distanceToShelf <= interactionDistance) {
+          showInventory(); // Affiche l'inventaire
+        }
+      });
 
       animate();
     </script>
